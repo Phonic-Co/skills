@@ -1,0 +1,9 @@
+node_modules/
+evals/
+.env
+.env.*
+__pycache__/
+
+# maintainer-internal, never published
+skills/phonic/DESIGN.md
+skills/phonic/feedback.txt

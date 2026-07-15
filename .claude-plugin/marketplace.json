@@ -1,0 +1,14 @@
+{
+  "name": "phonic-skills",
+  "owner": {
+    "name": "Phonic",
+    "url": "https://phonic.ai"
+  },
+  "plugins": [
+    {
+      "name": "phonic",
+      "source": "./",
+      "description": "Build voice agents on Phonic: agents, phone calls, browser speech-to-speech, tools, webhooks, and conversation analysis."
+    }
+  ]
+}
