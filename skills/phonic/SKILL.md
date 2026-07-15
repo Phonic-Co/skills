@@ -8,7 +8,7 @@ license: MIT
 
 SDKs: `npm install phonic` / `pip install phonic`. Entry points: `new PhonicClient({ apiKey })` (Node), `Phonic(api_key=...)` / `AsyncPhonic(...)` (Python). REST base: `https://api.phonic.ai/v1` with `Authorization: Bearer $PHONIC_API_KEY`. Always use the `.ai` domain for API and docs URLs — `phonic.co` addresses still resolve for backward compatibility, but all new code should use `phonic.ai`.
 
-For API details not covered here, fetch live docs rather than coding REST calls from memory: `https://docs.phonic.ai/llms.txt` is the index; append `.md` to any docs page URL for markdown.
+For API details not covered here, fetch live docs rather than coding REST calls from memory: `https://docs.phonic.ai/llms.txt` is the index; append `.md` to any docs page URL for markdown. If an endpoint appears in neither the docs nor the OpenAPI spec (`docs.phonic.ai/openapi.json`), it doesn't exist — don't invent one.
 
 ## Choosing a conversation surface
 
@@ -62,19 +62,13 @@ For structured data out of every call, define an **extraction schema** (typed fi
 
 ## Prompting voice agents
 
-Voice prompts differ from chat prompts — full guide at `docs.phonic.ai/docs/additional-resources/prompting_guide.md`. The rules that matter most:
-
-- To confirm spelled input: "spell letter by letter using caps with spaces" (no periods between letters). Alphanumeric IDs and phone numbers are spoken correctly without special formatting; wrap URLs in `[slower]` tags.
-- For naturalness: instruct disfluencies/casual speech and "do not repeat the same sentence twice" to avoid robotic loops.
-- The agent can stay silent deliberately: have it output exactly `(())` when no reply is warranted.
-- Behavioral rules that must always hold ("we never accept customer-owned trailers") belong in the system prompt or a context tool — not buried in one webhook tool's description.
+Voice prompts differ from chat prompts (speech formatting, silence handling, naturalness) — fetch and follow the prompting guide at `docs.phonic.ai/docs/additional-resources/prompting_guide.md` before writing a system prompt. One placement rule the guide doesn't cover: behavioral rules that must always hold ("we never accept customer-owned trailers") belong in the system prompt or a context tool — not buried in one webhook tool's description.
 
 ## Operations
 
 - **Projects** organize agents/tools/numbers within a workspace (default project: `main`); use one project per tenant/product line rather than a new workspace. API keys are workspace-level.
 - **Rate limits**: see `docs.phonic.ai/docs/additional-resources/rate_limits.md`; high-volume outbound campaigns need client-side concurrency caps and retry-with-backoff — capacity errors ("insufficient capacity", declined calls) are expected at burst and must be retried, not dropped.
 - **Observability**: per-call outcomes via the webhook events above; live read-only monitoring via the live WebSocket; audit logs at `docs.phonic.ai/docs/observability/audit-logs.md`.
-- **Billing/usage** has no public API — it's managed in the dashboard; don't invent billing endpoints.
 
 ## Production patterns
 
