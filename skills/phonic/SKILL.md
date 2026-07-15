@@ -46,7 +46,6 @@ Reference implementations: **github.com/Phonic-Co/phonic-web-demo** (Next.js bro
 
 ## Custom tools
 
-- Tool names are snake_case.
 - These parameter names are reserved — Phonic injects them, and defining them yourself silently breaks the tool: `call_info`, `conversation_id`, `from_phone_number`, `to_phone_number`, `twilio_call_sid`. Name your own parameters differently (e.g. `customer_phone_number`).
 - Tool outputs must include every identifier a later tool call needs as a parameter (e.g. return the `job_id` your `update_job` tool expects) — the agent can only pass along values it has been given.
 - Webhook tool endpoints need no response envelope — return plain JSON and it enters the agent's context — but the response is **silently truncated past 16,000 serialized characters**, so return only what the agent needs. POST tools receive parameters at the body root with call context nested under `call_info`; GET tools receive everything as query params (URL-encode phone numbers: `+` → `%2B`). `endpoint_timeout_ms` defaults to 5000; exceeding it fails the invocation.
