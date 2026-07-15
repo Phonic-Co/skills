@@ -14,7 +14,7 @@ For API details not covered here, fetch live docs rather than from memory: use t
 
 - **Outbound phone call**: `client.conversations.outboundCall({ to_phone_number, config })`
 - **Inbound phone number**: create/update the agent with `phone_number: "assign-automatically"`
-- **Voice in a browser or mobile app**: direct STS WebSocket `wss://api.phonic.ai/v1/sts/ws?session_token=...` (see Browser voice below)
+- **Voice in a browser or mobile app**: direct STS WebSocket `wss://api.phonic.ai/v1/sts/ws?session_token=...`
 - **Bridge your own telephony/audio server-side**: `client.conversations.connect()`
 - **Watch a live conversation (read-only)**: `wss://api.phonic.ai/v1/conversations/{id}/live/ws`
 
@@ -74,7 +74,7 @@ Webhook event names are exactly `conversation.ended`, `conversation.analysis`, `
 
 ## Prompting voice agents
 
-Voice prompts differ from chat prompts (speech formatting, silence handling, naturalness) — fetch and follow the prompting guide at `docs.phonic.ai/docs/additional-resources/prompting_guide.md` before writing a system prompt. One placement rule the guide doesn't cover: behavioral rules that must always hold ("we never accept customer-owned trailers") belong in the system prompt or a context tool — not buried in one webhook tool's description.
+Voice prompts differ from chat prompts (speech formatting, silence handling, naturalness) — fetch and follow the prompting guide at `docs.phonic.ai/docs/additional-resources/prompting_guide.md` before writing a system prompt.
 
 ## Operations
 
@@ -84,12 +84,12 @@ Voice prompts differ from chat prompts (speech formatting, silence handling, nat
 
 ## Production patterns
 
-These patterns look optional in a demo, and code that skips them still passes tests. The failures they prevent — double-paging someone, dropping work, retrying forever against a dead credential — only show up under real traffic:
+These patterns may not be necessary to get a working demo, but are good practices for handling customer traffic, especially as you scale:
 
 - **Webhook receivers** — Phonic delivers webhooks via svix, which retries, so the same event can arrive more than once (and concurrently). Build for that:
   1. Verify the svix signature before touching the body.
   2. Return 2xx immediately; do slow work (DB writes, API calls) in the background.
   3. Store each event id durably (DB unique constraint, not process memory) and skip events you've already processed.
   4. For side effects that must happen exactly once (paging someone, charging a card): durably mark the work "started" before doing it and "done" after, and on startup retry anything started-but-never-finished. The before-mark stops a redelivery from repeating the side effect; the startup retry stops a crash from silently dropping it.
-- **Reconnects, server-side: don't hand-roll them.** The SDK's `conversations.connect()` reconnects automatically on abnormal disconnects and resumes the same conversation — opt in with `reconnectConversationOnAbnormalDisconnect: true` (client or per-connect option).
+- **Server-side reconnects** The SDK's `conversations.connect()` reconnects automatically on abnormal disconnects and resumes the same conversation — opt in with `reconnectConversationOnAbnormalDisconnect: true` (client or per-connect option).
 - **Campaign/batch dialers**: claim each number (durable in-progress state) before dialing and design the claim so a second runner instance can't grab it too — per-run completion state alone doesn't prevent two processes from double-dialing.
