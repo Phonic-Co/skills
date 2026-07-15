@@ -74,7 +74,11 @@ Voice prompts differ from chat prompts (speech formatting, silence handling, nat
 
 For anything beyond a demo, these orderings are load-bearing — getting them subtly wrong passes tests and fails in production:
 
-- **Webhook receivers**: verify the svix signature before trusting the body; acknowledge with 2xx fast and do slow work asynchronously and idempotently; and commit dedup state (durable, keyed on event id) **before** performing side effects like paging or charging — commit-after-send means a crash in between double-sends on redelivery. Claiming-before-send alone trades duplicates for drops: record each pending side effect (outbox) and retry incomplete ones on startup, so a crash mid-sequence neither double-sends nor silently drops.
+- **Webhook receivers** — Phonic delivers webhooks via svix, which retries, so the same event can arrive more than once (and concurrently). Build for that:
+  1. Verify the svix signature before touching the body.
+  2. Return 2xx immediately; do slow work (DB writes, API calls) in the background.
+  3. Store each event id durably (DB unique constraint, not process memory) and skip events you've already processed.
+  4. For side effects that must happen exactly once (paging someone, charging a card): durably mark the work "started" before doing it and "done" after, and on startup retry anything started-but-never-finished. The before-mark stops a redelivery from repeating the side effect; the startup retry stops a crash from silently dropping it.
 - **Reconnects, server-side: don't hand-roll them.** The SDK's `conversations.connect()` reconnects automatically on abnormal disconnects and resumes the same conversation — opt in with `reconnectConversationOnAbnormalDisconnect: true` (client or per-connect option). **Browser sockets still need a hand-written loop** (no browser SDK yet): classify the failure before retrying — transient network errors get backoff + a **fresh session token** per attempt; auth/permission failures (revoked key, expired grant) must stop retrying and surface, or you'll hammer the API forever.
 - **Campaign/batch dialers**: claim each number (durable in-progress state) before dialing and design the claim so a second runner instance can't grab it too — per-run completion state alone doesn't prevent two processes from double-dialing.
 
