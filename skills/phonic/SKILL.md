@@ -26,7 +26,7 @@ Mistakes to avoid when picking:
 
 ## Browser voice
 
-This is the recommended pattern — connect the browser directly to Phonic:
+This is the recommended pattern for building Phonic into a browser:
 
 1. Server side, exchange the API key for a session token with the SDK — `client.auth.createSessionToken({ ttl_seconds: 300 })` (`POST /v1/auth/session_token`). The API key stays on the server — in Next.js, never put it in a `NEXT_PUBLIC_*` env var (those are compiled into client code).
 2. The browser connects directly to `wss://api.phonic.ai/v1/sts/ws?session_token=<token>` (token in the query string — browsers can't set WebSocket headers). Don't add a relay server in between; the direct connection is the supported, lowest-latency pattern.
@@ -74,7 +74,7 @@ Webhook event names are exactly `conversation.ended`, `conversation.analysis`, `
 
 ## Prompting voice agents
 
-Voice prompts differ from chat prompts (speech formatting, silence handling, naturalness) — fetch and follow the prompting guide at `docs.phonic.ai/docs/additional-resources/prompting_guide.md` before writing a system prompt.
+Voice prompts differ from chat prompts (speech formatting, silence handling, naturalness) — use `docs.phonic.ai/docs/additional-resources/prompting_guide.md`.
 
 ## Operations
 
