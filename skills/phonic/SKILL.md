@@ -34,6 +34,8 @@ This is the recommended pattern — connect the browser directly to Phonic:
 4. Send mic audio as base64 16-bit PCM in `{ "type": "audio_chunk", "audio": ... }` (capture via AudioWorklet) — **each chunk must be ≤40ms of audio** (the server rejects longer chunks with an error; batch ~20ms frames). The server streams agent audio back as `audio_chunk` messages too (same type name, both directions) — play them back by scheduling gaplessly on one shared AudioContext.
 5. Turn lifecycle comes from explicit events: `assistant_started_speaking` / `assistant_finished_speaking` and `user_started_speaking` / `user_finished_speaking` (all bare `{type}` markers). When building a transcript UI, start a new assistant entry on `assistant_started_speaking`, not on the first audio chunk — **trailing `audio_chunk`s (often with empty text) can arrive after `assistant_finished_speaking`**, and keying entries on chunks creates ghost transcript items. Barge-in is signaled by `user_started_speaking`; flush queued playback there.
 
+6. Long sessions need a reconnect loop (there's no browser SDK to do it for you): on a drop, retry with backoff and mint a **fresh session token per attempt**; classify failures first — network blips are retryable, auth failures (revoked key, expired grant) must stop retrying and surface to the user.
+
 Reference implementations: **github.com/Phonic-Co/phonic-web-demo** (Next.js browser voice) and **github.com/Phonic-Co/phonic-examples** (quick start, webhooks, websocket conversations, websocket tools — TS and Python).
 
 ## SDK surface
@@ -61,11 +63,14 @@ Reference implementations: **github.com/Phonic-Co/phonic-web-demo** (Next.js bro
 - Voicemail detection: set `detect_voicemail: true` on the transfer tool (tools API). The agent then listens to the answered leg and a system tool call records the judgment — `tool_transfer_hit_voicemail` or `tool_transfer_successful` (= judged human). Without voicemail detection, `tool_transfer_successful` fires immediately on connect and means only "connected". Detection requires the bridged transfer mode (`use_agent_phone_number: true`, the default) — a SIP REFER handoff leaves the call and can't listen.
 - The `conversation.transferred` webhook carries `transferred_to`, `call_info`, and the conversation items up to the transfer — the pre-transfer transcript arrives with the event.
 
-## Webhooks and post-call analysis
+## Webhooks and post-call steps
 
-Webhook event names: `conversation.ended`, `conversation.analysis`, `conversation.transferred`. Analysis and extraction results arrive in the `conversation.analysis` event, or via `GET /v1/conversations/{id}/analysis`.
+Webhook event names are exactly `conversation.ended`, `conversation.analysis`, `conversation.transferred`. A typical post-call pipeline hangs off them:
 
-For structured data out of every call, define an **extraction schema** (typed fields, not free text) via the extraction-schemas API and read results per conversation. For quality/QA, projects support **conversation eval prompts** (`name` + a plain-language criterion like "the assistant made the required disclosure") that conversations are evaluated against — create via the projects eval-prompts API, results via the conversation evaluations endpoints.
+1. **`conversation.ended`** fires when the call ends — log the outcome and kick off your downstream steps from here.
+2. **`conversation.analysis`** follows with performance metrics: its `conversation` payload carries `latencies_ms` and `interruptions_count` (also available via `GET /v1/conversations/{id}/analysis`). It does **not** contain extraction results — those are a separate step you run.
+3. **Extractions** turn the transcript into typed fields you define. Create an **extraction schema** once (extraction-schemas API; typed fields, not free text), then run it per conversation with `POST /v1/conversations/{id}/extractions` and read results with the matching GET — typically from your `conversation.ended` handler. Extractions read the transcript, so they fail once transcripts are deleted; run them promptly if you have a retention policy.
+4. **Eval prompts** grade calls against plain-language criteria. Create them at the project level (`name` + a criterion like "the assistant made the required disclosure"), evaluate a conversation via the conversation-evals endpoint, and read results per conversation or listed across the project — useful for compliance checks and QA queues.
 
 ## Prompting voice agents
 
@@ -79,7 +84,7 @@ Voice prompts differ from chat prompts (speech formatting, silence handling, nat
 
 ## Production patterns
 
-For anything beyond a demo, these orderings are load-bearing — getting them subtly wrong passes tests and fails in production:
+These patterns look optional in a demo, and code that skips them still passes tests. The failures they prevent — double-paging someone, dropping work, retrying forever against a dead credential — only show up under real traffic:
 
 - **Webhook receivers** — Phonic delivers webhooks via svix, which retries, so the same event can arrive more than once (and concurrently). Build for that:
   1. Verify the svix signature before touching the body.
@@ -87,10 +92,4 @@ For anything beyond a demo, these orderings are load-bearing — getting them su
   3. Store each event id durably (DB unique constraint, not process memory) and skip events you've already processed.
   4. For side effects that must happen exactly once (paging someone, charging a card): durably mark the work "started" before doing it and "done" after, and on startup retry anything started-but-never-finished. The before-mark stops a redelivery from repeating the side effect; the startup retry stops a crash from silently dropping it.
 - **Reconnects, server-side: don't hand-roll them.** The SDK's `conversations.connect()` reconnects automatically on abnormal disconnects and resumes the same conversation — opt in with `reconnectConversationOnAbnormalDisconnect: true` (client or per-connect option).
-- **Browser sockets still need a hand-written loop** (no browser SDK yet): classify the failure before retrying — transient network errors get backoff + a **fresh session token** per attempt; auth/permission failures (revoked key, expired grant) must stop retrying and surface, or you'll hammer the API forever.
 - **Campaign/batch dialers**: claim each number (durable in-progress state) before dialing and design the claim so a second runner instance can't grab it too — per-run completion state alone doesn't prevent two processes from double-dialing.
-
-## Defaults
-
-- Create referenced resources instead of stopping to ask: if the task mentions an agent that may not exist, create it (or `upsert` it) in the setup path.
-- Dashboard steps shown in docs (API keys aside) have API equivalents — prefer code.
