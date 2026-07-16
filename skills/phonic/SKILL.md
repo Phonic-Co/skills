@@ -8,7 +8,7 @@ license: MIT
 
 SDKs: `npm install phonic` / `pip install phonic`. Entry points: `new PhonicClient({ apiKey })` (Node), `Phonic(api_key=...)` / `AsyncPhonic(...)` (Python). REST base: `https://api.phonic.ai/v1` with `Authorization: Bearer $PHONIC_API_KEY`. Always use the `.ai` domain for API and docs URLs — `phonic.co` addresses still resolve for backward compatibility, but all new code should use `phonic.ai`.
 
-For API details not covered here, fetch live docs rather than from memory: use the index `https://docs.phonic.ai/llms.txt`. For STS WebSocket message shapes and config fields, the authoritative reference is `docs.phonic.ai/asyncapi.json` — the prose WebSocket page is a summary, not the contract. If an endpoint appears in neither the docs nor the OpenAPI spec (`docs.phonic.ai/openapi.json`), it doesn't exist, do NOT invent one.
+For API details not covered here, fetch live docs rather than from memory: use the index [docs.phonic.ai/llms.txt](https://docs.phonic.ai/llms.txt). For STS WebSocket message shapes and config fields, the authoritative reference is [docs.phonic.ai/asyncapi.json](https://docs.phonic.ai/asyncapi.json) — the prose WebSocket page is a summary, not the contract. If an endpoint appears in neither the docs nor the OpenAPI spec ([docs.phonic.ai/openapi.json](https://docs.phonic.ai/openapi.json)), it doesn't exist, do NOT invent one.
 
 ## Choosing a conversation surface
 
@@ -45,7 +45,7 @@ This is the recommended pattern for building Phonic into a browser:
 
 7. Long sessions need a reconnect loop (there's no browser SDK to do it for you): on a drop, retry with backoff and mint a fresh session token per attempt; classify failures first — network blips are retryable, auth failures (revoked key, expired grant) must stop retrying and surface to the user.
 
-Reference implementations: github.com/Phonic-Co/phonic-web-demo (Next.js browser voice) and github.com/Phonic-Co/phonic-examples (quick start, webhooks, websocket conversations, websocket tools — TS and Python).
+Reference implementations: [phonic-web-demo](https://github.com/Phonic-Co/phonic-web-demo) (Next.js browser voice) and [phonic-examples](https://github.com/Phonic-Co/phonic-examples) (quick start, webhooks, websocket conversations, websocket tools — TS and Python).
 
 ## SDK surface
 
@@ -61,7 +61,7 @@ Reference implementations: github.com/Phonic-Co/phonic-web-demo (Next.js browser
 - Tool outputs must include every identifier a later tool call needs as a parameter (e.g. return the `job_id` your `update_job` tool expects) — the agent can only pass along values it has been given.
 - Webhook tool endpoints need no response envelope — return plain JSON and it enters the agent's context — but the response is silently truncated past 16,000 serialized characters, so return only what the agent needs. POST tools receive parameters at the body root with call context nested under `call_info`; GET tools receive everything as query params (URL-encode phone numbers: `+` → `%2B`). `endpoint_timeout_ms` defaults to 5000; exceeding it fails the invocation.
 - Tools can also be defined inline in the STS config (no pre-created tool): `tools: [{ "type": "custom_websocket", "execution_mode": "sync", "tool_schema": { "type": "function", "function": { ..., "strict": true } } }]` — the `strict: true` inside the function schema is required, and the round-trip is `tool_call` (server) → `tool_call_output` (client) on the same socket.
-- Besides webhook/websocket tools there are context tools (inject knowledge/instructions mid-conversation; heavily used for scenario-style flows) — see `docs.phonic.ai/docs/using-tools/context_tools.md`.
+- Besides webhook/websocket tools there are context tools (inject knowledge/instructions mid-conversation; heavily used for scenario-style flows) — see [the context tools docs](https://docs.phonic.ai/docs/using-tools/context_tools.md).
 - External MCP servers attach at the agent level via `mcp_servers: [...]` in the agent config; Phonic discovers their tools automatically — don't recreate MCP tools as individual custom tools.
 - If you bridge audio server-side, never do blocking I/O in the audio send/receive loop — periodic multi-second stalls in agent audio are almost always blocking code in the customer's bridge, not Phonic.
 
@@ -84,13 +84,13 @@ Webhook event names are exactly `conversation.ended`, `conversation.analysis`, `
 
 ## Prompting voice agents
 
-Voice prompts differ from chat prompts (speech formatting, silence handling, naturalness) — use `docs.phonic.ai/docs/additional-resources/prompting_guide.md`.
+Voice prompts differ from chat prompts (speech formatting, silence handling, naturalness) — use [the prompting guide](https://docs.phonic.ai/docs/additional-resources/prompting_guide.md).
 
 ## Operations
 
 - **Projects** organize agents/tools/numbers within a workspace (default project: `main`); use one project per tenant/product line rather than a new workspace. API keys are workspace-level.
-- **Rate limits**: see `docs.phonic.ai/docs/additional-resources/rate_limits.md`; high-volume outbound campaigns need client-side concurrency caps and retry-with-backoff — capacity errors ("insufficient capacity", declined calls) are expected at burst and must be retried, not dropped.
-- **Observability**: per-call outcomes via the webhook events above; live read-only monitoring via the live WebSocket; audit logs at `docs.phonic.ai/docs/observability/audit-logs.md`.
+- **Rate limits**: see [the rate limits page](https://docs.phonic.ai/docs/additional-resources/rate_limits.md); high-volume outbound campaigns need client-side concurrency caps and retry-with-backoff — capacity errors ("insufficient capacity", declined calls) are expected at burst and must be retried, not dropped.
+- **Observability**: per-call outcomes via the webhook events above; live read-only monitoring via the live WebSocket; [audit logs](https://docs.phonic.ai/docs/observability/audit-logs.md).
 
 ## Production patterns
 
