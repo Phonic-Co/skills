@@ -8,7 +8,7 @@ license: MIT
 
 SDKs: `npm install phonic` / `pip install phonic`. Entry points: `new PhonicClient({ apiKey })` (Node), `Phonic(api_key=...)` / `AsyncPhonic(...)` (Python). REST base: `https://api.phonic.ai/v1` with `Authorization: Bearer $PHONIC_API_KEY`. Always use the `.ai` domain for API and docs URLs — `phonic.co` addresses still resolve for backward compatibility, but all new code should use `phonic.ai`.
 
-For API details not covered here, fetch live docs rather than from memory: use the index `https://docs.phonic.ai/llms.txt`. **For STS WebSocket message shapes and config fields, the authoritative reference is `docs.phonic.ai/asyncapi.json`** — the prose WebSocket page is a summary, not the contract. If an endpoint appears in neither the docs nor the OpenAPI spec (`docs.phonic.ai/openapi.json`), it doesn't exist, do NOT invent one.
+For API details not covered here, fetch live docs rather than from memory: use the index `https://docs.phonic.ai/llms.txt`. For STS WebSocket message shapes and config fields, the authoritative reference is `docs.phonic.ai/asyncapi.json` — the prose WebSocket page is a summary, not the contract. If an endpoint appears in neither the docs nor the OpenAPI spec (`docs.phonic.ai/openapi.json`), it doesn't exist, do NOT invent one.
 
 ## Choosing a conversation surface
 
@@ -30,7 +30,7 @@ Every STS conversation — browser or server bridge — begins with a `config` m
 
 - Minimal form: `{ "type": "config", "agent": "<agent-name>", "input_format": "pcm_44100", "output_format": "pcm_44100" }`.
 - For prototyping, it is possible to send the config without an agent by carrying `system_prompt`, `welcome_message`, `voice_id`, `tools`, and more inline (see the config schema in asyncapi.json).
-- Config validation is strict: unknown fields and out-of-bounds values are rejected with `{"error": {"message": "Invalid parameters"}}` plus a `param_errors` object naming each offending field — **read it**, and treat a config rejection as fatal (a reconnect loop must not resend the same config). Field bounds are documented on the docs pages, but the served `asyncapi.json` artifact currently omits constraint keywords (`minimum`/`maximum`/`const`) — a field looking unconstrained in the artifact doesn't mean it is.
+- Config validation is strict: unknown fields and out-of-bounds values are rejected with `{"error": {"message": "Invalid parameters"}}` plus a `param_errors` object naming each offending field — read it, and treat a config rejection as fatal (a reconnect loop must not resend the same config). Field bounds are documented on the docs pages, but the served `asyncapi.json` artifact currently omits constraint keywords (`minimum`/`maximum`/`const`) — a field looking unconstrained in the artifact doesn't mean it is.
 
 ## Browser voice
 
@@ -39,13 +39,13 @@ This is the recommended pattern for building Phonic into a browser:
 1. Server side, exchange the API key for a session token with the SDK — `client.auth.createSessionToken({ ttl_seconds: 300 })` (`POST /v1/auth/session_token`). The API key stays on the server — in Next.js, never put it in a `NEXT_PUBLIC_*` env var (those are compiled into client code).
 2. The browser connects directly to `wss://api.phonic.ai/v1/sts/ws?session_token=<token>` (token in the query string — browsers can't set WebSocket headers). Don't add a relay server in between; the direct connection is the supported, lowest-latency pattern.
 3. Send the config message first (see The config message above).
-4. Send mic audio as base64 16-bit PCM in `{ "type": "audio_chunk", "audio": ... }` (capture via AudioWorklet; note `getUserMedia` requires a secure context — HTTPS or localhost) — **each chunk must be ≤40ms of audio** (the server rejects longer chunks with an error; batch ~20ms frames). The server streams agent audio back as `audio_chunk` messages too (same type name, both directions) — play them back by scheduling gaplessly on one shared AudioContext.
+4. Send mic audio as base64 16-bit PCM in `{ "type": "audio_chunk", "audio": ... }` (capture via AudioWorklet; note `getUserMedia` requires a secure context — HTTPS or localhost) — each chunk must be ≤40ms of audio (the server rejects longer chunks with an error; batch ~20ms frames). The server streams agent audio back as `audio_chunk` messages too (same type name, both directions) — play them back by scheduling gaplessly on one shared AudioContext.
 5. Mid-call, the client can send more than audio: `update_system_prompt`, `add_system_message` (inject context), `update_tools_subset`, `set_external_id`, `mute` / `unmute`, `generate_reply` (force a turn), and `say` — schemas in asyncapi.json. These enable patterns like pushing app state into the conversation or a button that makes the agent speak.
-6. Turn lifecycle comes from explicit events: `assistant_started_speaking` / `assistant_finished_speaking` and `user_started_speaking` / `user_finished_speaking` (all bare `{type}` markers). When building a transcript UI, start a new assistant entry on `assistant_started_speaking`, not on the first audio chunk — **trailing `audio_chunk`s (often with empty text) can arrive after `assistant_finished_speaking`**, and keying entries on chunks creates ghost transcript items. Barge-in is signaled by `user_started_speaking`; flush queued playback there.
+6. Turn lifecycle comes from explicit events: `assistant_started_speaking` / `assistant_finished_speaking` and `user_started_speaking` / `user_finished_speaking` (all bare `{type}` markers). When building a transcript UI, start a new assistant entry on `assistant_started_speaking`, not on the first audio chunk — trailing `audio_chunk`s (often with empty text) can arrive after `assistant_finished_speaking`, and keying entries on chunks creates ghost transcript items. Barge-in is signaled by `user_started_speaking`; flush queued playback there.
 
-7. Long sessions need a reconnect loop (there's no browser SDK to do it for you): on a drop, retry with backoff and mint a **fresh session token per attempt**; classify failures first — network blips are retryable, auth failures (revoked key, expired grant) must stop retrying and surface to the user.
+7. Long sessions need a reconnect loop (there's no browser SDK to do it for you): on a drop, retry with backoff and mint a fresh session token per attempt; classify failures first — network blips are retryable, auth failures (revoked key, expired grant) must stop retrying and surface to the user.
 
-Reference implementations: **github.com/Phonic-Co/phonic-web-demo** (Next.js browser voice) and **github.com/Phonic-Co/phonic-examples** (quick start, webhooks, websocket conversations, websocket tools — TS and Python).
+Reference implementations: github.com/Phonic-Co/phonic-web-demo (Next.js browser voice) and github.com/Phonic-Co/phonic-examples (quick start, webhooks, websocket conversations, websocket tools — TS and Python).
 
 ## SDK surface
 
@@ -59,9 +59,9 @@ Reference implementations: **github.com/Phonic-Co/phonic-web-demo** (Next.js bro
 
 - These parameter names are reserved — Phonic injects them, and defining them yourself silently breaks the tool: `call_info`, `conversation_id`, `from_phone_number`, `to_phone_number`, `twilio_call_sid`. Name your own parameters differently (e.g. `customer_phone_number`).
 - Tool outputs must include every identifier a later tool call needs as a parameter (e.g. return the `job_id` your `update_job` tool expects) — the agent can only pass along values it has been given.
-- Webhook tool endpoints need no response envelope — return plain JSON and it enters the agent's context — but the response is **silently truncated past 16,000 serialized characters**, so return only what the agent needs. POST tools receive parameters at the body root with call context nested under `call_info`; GET tools receive everything as query params (URL-encode phone numbers: `+` → `%2B`). `endpoint_timeout_ms` defaults to 5000; exceeding it fails the invocation.
+- Webhook tool endpoints need no response envelope — return plain JSON and it enters the agent's context — but the response is silently truncated past 16,000 serialized characters, so return only what the agent needs. POST tools receive parameters at the body root with call context nested under `call_info`; GET tools receive everything as query params (URL-encode phone numbers: `+` → `%2B`). `endpoint_timeout_ms` defaults to 5000; exceeding it fails the invocation.
 - Tools can also be defined inline in the STS config (no pre-created tool): `tools: [{ "type": "custom_websocket", "execution_mode": "sync", "tool_schema": { "type": "function", "function": { ..., "strict": true } } }]` — the `strict: true` inside the function schema is required, and the round-trip is `tool_call` (server) → `tool_call_output` (client) on the same socket.
-- Besides webhook/websocket tools there are **context tools** (inject knowledge/instructions mid-conversation; heavily used for scenario-style flows) — see `docs.phonic.ai/docs/using-tools/context_tools.md`.
+- Besides webhook/websocket tools there are context tools (inject knowledge/instructions mid-conversation; heavily used for scenario-style flows) — see `docs.phonic.ai/docs/using-tools/context_tools.md`.
 - External MCP servers attach at the agent level via `mcp_servers: [...]` in the agent config; Phonic discovers their tools automatically — don't recreate MCP tools as individual custom tools.
 - If you bridge audio server-side, never do blocking I/O in the audio send/receive loop — periodic multi-second stalls in agent audio are almost always blocking code in the customer's bridge, not Phonic.
 
@@ -69,7 +69,7 @@ Reference implementations: **github.com/Phonic-Co/phonic-web-demo** (Next.js bro
 
 - Transfer to a human is a built-in tool (`built_in_transfer_to_phone_number`, target number in the tool config) attached to the agent — don't hand-roll Twilio call control.
 - Targets are preconfigured per transfer tool; the agent chooses among configured transfer tools and cannot dial an arbitrary number returned by another tool mid-call.
-- Reading outcomes from conversation data: the transfer tool's output body has `connected: true|false` — `true` means the callee leg answered (human **or** voicemail); `false` means the transfer failed and the agent tells the caller.
+- Reading outcomes from conversation data: the transfer tool's output body has `connected: true|false` — `true` means the callee leg answered (human or voicemail); `false` means the transfer failed and the agent tells the caller.
 - Voicemail detection: set `detect_voicemail: true` on the transfer tool (tools API). The agent then listens to the answered leg and a system tool call records the judgment — `tool_transfer_hit_voicemail` or `tool_transfer_successful` (= judged human). Without voicemail detection, `tool_transfer_successful` fires immediately on connect and means only "connected". Detection requires the bridged transfer mode (`use_agent_phone_number: true`, the default) — a SIP REFER handoff leaves the call and can't listen.
 - The `conversation.transferred` webhook carries `transferred_to`, `call_info`, and the conversation items up to the transfer — the pre-transfer transcript arrives with the event.
 
@@ -78,8 +78,8 @@ Reference implementations: **github.com/Phonic-Co/phonic-web-demo** (Next.js bro
 Webhook event names are exactly `conversation.ended`, `conversation.analysis`, `conversation.transferred`. A typical post-call pipeline hangs off them:
 
 1. **`conversation.ended`** fires when the call ends — log the outcome and kick off your downstream steps from here.
-2. **`conversation.analysis`** follows with performance metrics: its `conversation` payload carries `latencies_ms` and `interruptions_count` (also available via `GET /v1/conversations/{id}/analysis`). It does **not** contain extraction results — those are a separate step you run.
-3. **Extractions** turn the transcript into typed fields you define. Create an **extraction schema** once (extraction-schemas API; typed fields, not free text), then run it per conversation with `POST /v1/conversations/{id}/extractions` and read results with the matching GET — typically from your `conversation.ended` handler. Extractions read the transcript, so they fail once transcripts are deleted; run them promptly if you have a retention policy.
+2. **`conversation.analysis`** follows with performance metrics: its `conversation` payload carries `latencies_ms` and `interruptions_count` (also available via `GET /v1/conversations/{id}/analysis`). It does not contain extraction results — those are a separate step you run.
+3. **Extractions** turn the transcript into typed fields you define. Create an extraction schema once (extraction-schemas API; typed fields, not free text), then run it per conversation with `POST /v1/conversations/{id}/extractions` and read results with the matching GET — typically from your `conversation.ended` handler. Extractions read the transcript, so they fail once transcripts are deleted; run them promptly if you have a retention policy.
 4. **Eval prompts** grade calls against plain-language criteria. Create them at the project level (`name` + a criterion like "the assistant made the required disclosure"), evaluate a conversation via the conversation-evals endpoint, and read results per conversation or listed across the project — useful for compliance checks and QA queues.
 
 ## Prompting voice agents
