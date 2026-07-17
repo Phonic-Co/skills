@@ -28,7 +28,7 @@ Mistakes to avoid when picking:
 
 Every conversation begins with a `config` message:
 
-- Minimal form: `{ "type": "config", "agent": "<agent-name>", "input_format": "<input-audio-format>", "output_format": "<output-audio-format>" }`.
+- Minimal `config` message: `{ "type": "config", "agent": "my-cool-agent", "input_format": "pcm_44100", "output_format": "pcm_44100" }` (pick the audio formats that match your use case).
 - For prototyping, it is possible to send the config without a named agent by carrying `system_prompt`, `welcome_message`, `voice_id`, `tools`, and more inline (see the config schema in [asyncapi.json](https://docs.phonic.ai/asyncapi.json)). However, for long-term projects we recommend creating an agent to be able to track version changes, reuse the agent config across different conversation mediums, and avoid frequent redeployments.
 - Unknown fields and out-of-bounds values are rejected with `{"error": {"message": "Invalid parameters"}}` plus a `param_errors` object naming each offending field — read it, and treat a config rejection as fatal (a reconnect loop must not resend the same config). Field bounds are documented on the docs pages, but the served `asyncapi.json` artifact currently omits constraint keywords (`minimum`/`maximum`/`const`) — a field looking unconstrained in the artifact doesn't mean it is.
 
