@@ -8,7 +8,7 @@ license: MIT
 
 SDKs: `npm install phonic` / `pip install phonic`. Entry points: `new PhonicClient({ apiKey })` (Node), `Phonic(api_key=...)` / `AsyncPhonic(...)` (Python). REST base: `https://api.phonic.ai/v1` with `Authorization: Bearer $PHONIC_API_KEY`. Always use the `.ai` domain for API and docs URLs — `phonic.co` addresses still resolve for backward compatibility, but all new code should use `phonic.ai`.
 
-Fetch live docs rather than from memory: use the index [docs.phonic.ai/llms.txt](https://docs.phonic.ai/llms.txt). For the REST API, see [docs.phonic.ai/openapi.json](https://docs.phonic.ai/openapi.json). For the WebSocket protocol, see [docs.phonic.ai/asyncapi.json](https://docs.phonic.ai/asyncapi.json). If an endpoint does not appear in these docs, it doesn't exist, do not invent one.
+Fetch live docs rather than from memory: use the index at [llms.txt](https://docs.phonic.ai/llms.txt). For the REST API, see [openapi.json](https://docs.phonic.ai/openapi.json). For the WebSocket protocol, see [asyncapi.json](https://docs.phonic.ai/asyncapi.json). If an endpoint does not appear in these docs, it doesn't exist, do not invent one.
 
 ## Choosing a conversation surface
 
