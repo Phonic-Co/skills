@@ -55,7 +55,7 @@ Reference implementations: [phonic-web-demo](https://github.com/Phonic-Co/phonic
 
 ## Tools
 
-Tool types (webhook, websocket, context, built-in transfers, MCP), reserved parameter names, and each type's request/response contract are documented in [the tools docs](https://docs.phonic.ai/docs/using-tools/tools_overview.md) — fetch the page for your tool type before implementing.
+Tool types (webhook, websocket, context, built-in transfers, MCP), reserved parameter names, and each type's request/response contract are documented in [the tools docs](https://docs.phonic.ai/docs/build/tools/tools_overview.md) — fetch the page for your tool type before implementing.
 
 - Tool outputs must include every identifier a later tool call needs as a parameter (e.g. return the `job_id` your `update_job` tool expects) — the agent can only pass along values it has been given.
 - Tools can be defined inline in the STS config (no pre-created tool): `tools: [{ "type": "custom_websocket", "execution_mode": "sync", "tool_schema": { "type": "function", "function": { ..., "strict": true } } }]` — the `strict: true` inside the function schema is required.
@@ -80,13 +80,13 @@ Webhooks can indicate conversation progress: `conversation.ended`, `conversation
 
 ## Prompting voice agents
 
-Voice prompts differ from chat prompts (speech formatting, silence handling, naturalness) — use [the prompting guide](https://docs.phonic.ai/docs/additional-resources/prompting_guide.md).
+Voice prompts differ from chat prompts (speech formatting, silence handling, naturalness) — use [the prompting guide](https://docs.phonic.ai/docs/build/agent-configuration/prompting_guide.md).
 
 ## Operations
 
 - **Projects** organize agents/tools/numbers within a workspace; use one project per tenant/product line rather than a new workspace. API keys are workspace-level.
-- **Rate limits**: see [the rate limits page](https://docs.phonic.ai/docs/additional-resources/rate_limits.md); high-volume outbound campaigns need client-side concurrency caps.
-- **Observability**: per-call outcomes via the webhook events above; live read-only monitoring via the live WebSocket; [audit logs](https://docs.phonic.ai/docs/observability/audit-logs.md).
+- **Rate limits**: see [the rate limits page](https://docs.phonic.ai/docs/platform/rate_limits.md); high-volume outbound campaigns need client-side concurrency caps.
+- **Observability**: per-call outcomes via the webhook events above; live read-only monitoring via the live WebSocket; [audit logs](https://docs.phonic.ai/docs/platform/audit-logs.md).
 
 ## Best practices for shipping to prod
 
