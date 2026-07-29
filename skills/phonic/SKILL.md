@@ -80,7 +80,7 @@ Webhooks can indicate conversation progress: `conversation.ended`, `conversation
 
 ## Prompting voice agents
 
-Voice prompts differ from chat prompts (speech formatting, silence handling, naturalness) — use [the prompting guide](https://docs.phonic.ai/docs/build/agent-configuration/prompting_guide.md).
+Voice prompts differ from chat prompts (speech formatting, silence handling, naturalness) — use [the prompting guide](https://docs.phonic.ai/docs/build/agents/prompting_guide.md).
 
 ## Operations
 
