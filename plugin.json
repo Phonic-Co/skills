@@ -1,0 +1,34 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "phonic",
+  "version": "0.2.0",
+  "description": "Build, test, and operate Phonic voice agents with product skills, API tools, and documentation search.",
+  "author": {
+    "name": "Phonic",
+    "url": "https://phonic.ai"
+  },
+  "homepage": "https://docs.phonic.ai",
+  "repository": "https://github.com/Phonic-Co/skills",
+  "license": "MIT",
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Phonic",
+        "shortDescription": "Build and test Phonic voice agents",
+        "logo": "./assets/phonic.svg",
+        "composerIcon": "./assets/phonic.svg",
+        "developerName": "Phonic",
+        "websiteURL": "https://phonic.ai",
+        "supportURL": "https://docs.phonic.ai",
+        "privacyPolicyURL": "https://phonic.ai/legal/privacy-policy",
+        "termsOfServiceURL": "https://phonic.ai/legal/terms-of-service",
+        "longDescription": "Build and test Phonic voice agents. Search product documentation, discover voices, simulate conversation responses, replay recorded turns, and guide live conversation steering. API tools use the connected Phonic account and its workspace permissions.",
+        "defaultPrompt": [
+          "Help me build my first Phonic voice agent.",
+          "Find a voice for my agent and explain how to preview it.",
+          "Help me test a prompt with a simulated conversation."
+        ]
+      }
+    }
+  }
+}
