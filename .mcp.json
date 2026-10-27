@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "phonic": {
+      "type": "http",
+      "url": "https://mcp.phonic.ai/mcp"
+    },
+    "phonic-docs": {
+      "type": "http",
+      "url": "https://docs.phonic.ai/_mcp/server"
+    }
+  }
+}
