@@ -1,6 +1,6 @@
 {
   "name": "phonic",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Build, test, and operate Phonic voice agents with product skills, API tools, and documentation search.",
   "author": {
     "name": "Phonic",
