@@ -22,8 +22,11 @@ Set `voice_id` only within the requested agent/application change. Note that cho
 
 ## Allocate voices across conversations
 
-Offer a fixed voice or a random voice set according to the use case. Narrow the candidate set to voices suitable for the required languages and persona first.
+Choose based on the experience callers should have: should they recognize a consistent persona, or hear different members of a team? Use context already provided; ask only if this affects the choice and is unclear.
+
+- **Fixed voice:** fits a recurring persona, such as a front-desk receptionist whom callers expect to recognize across calls.
+- **Random voice set:** fits a team experience, such as customer service, where callers may hear a different representative on each call instead of always hearing the same voice. Random selection can still repeat a voice on consecutive calls.
+
+Narrow the candidate set to voices suitable for the required languages and persona first.
 
 Phonic supports equal-probability random allocation: set `voice_id` and `additional_voice_ids` on the agent. Each conversation receives one voice from their combined set. The additional list must exclude `voice_id` and contain no duplicates. Verify the exposed schema against the [agent API](https://docs.phonic.ai/api-reference/agents/create.md) before applying it. For example, a set with `voice_id: "sabrina"` and `additional_voice_ids: ["sandeep"]` selects either voice with equal probability; it does not alternate predictably.
-
-When comparing voice performance, record the selected voice with experiment outcomes; small random samples may not be evenly balanced.
