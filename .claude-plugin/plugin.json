@@ -6,9 +6,21 @@
     "name": "Phonic",
     "url": "https://phonic.ai"
   },
-  "homepage": "https://docs.phonic.ai",
+  "homepage": "https://phonic.ai",
+  "documentationUrl": "https://docs.phonic.ai",
   "repository": "https://github.com/Phonic-Co/skills",
   "license": "MIT",
+  "keywords": [
+    "phonic",
+    "voice",
+    "voice-ai",
+    "voice-agents",
+    "conversational-ai",
+    "speech-to-speech",
+    "phone-calls",
+    "telephony",
+    "mcp"
+  ],
   "mcpServers": "./.mcp.json",
   "icon": "./.claude-plugin/icon.png",
   "privacyPolicyUrl": "https://phonic.ai/legal/privacy-policy",
