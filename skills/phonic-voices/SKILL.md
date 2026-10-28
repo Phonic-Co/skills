@@ -14,7 +14,7 @@ Start with the use case and the person the voice should evoke. Ask only for miss
 - Which languages matter most, and which need occasional support?
 - What personality, energy, accent, or speaking style fits the intended experience?
 
-Use available language-proficiency information to prioritize the important languages, then match style and accent to the desired persona. Offer a small shortlist with verified voice IDs and a brief reason for each. For example, Sandeep can fit a realistic, tired, monotonous customer-support representative; Sabrina can fit a cheerful, chatty persona. Treat these as listening starting points and verify their current availability and target-language suitability. If proficiency information is missing, use a preview in that language before making a recommendation.
+Use the language-proficiency ratings to prioritize the important languages, then match style and accent to the desired persona. Offer a small shortlist with verified voice IDs and a brief reason for each. For example, Sandeep can fit a realistic, tired, monotonous customer-support representative; Sabrina can fit a cheerful, chatty persona. Treat these as listening starting points and verify their current availability and target-language suitability.
 
 Preview candidates with the same short, representative sentence in the intended language using `voices_preview` or the voice picker. Include domain terms and numbers when their pronunciation matters. If the client can play returned audio, let the user listen; otherwise point them to the voice picker or voices page. Do not claim to have heard audio that you could not play or inspect.
 
