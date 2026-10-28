@@ -10,5 +10,6 @@
       "source": "./",
       "description": "Build voice agents on Phonic: agents, phone calls, browser speech-to-speech, tools, webhooks, and conversation analysis."
     }
-  ]
+  ],
+  "description": "Official Phonic skills and MCP connection for building voice agents."
 }
