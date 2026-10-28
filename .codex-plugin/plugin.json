@@ -13,7 +13,7 @@
   "mcpServers": "./.mcp.json",
   "interface": {
     "displayName": "Phonic",
-    "shortDescription": "Build and test voice agents",
+    "shortDescription": "Voice agents",
     "logo": "./assets/phonic.svg",
     "composerIcon": "./assets/phonic.svg",
     "developerName": "Phonic",
@@ -21,13 +21,13 @@
     "supportURL": "https://docs.phonic.ai",
     "privacyPolicyURL": "https://phonic.ai/legal/privacy-policy",
     "termsOfServiceURL": "https://phonic.ai/legal/terms-of-service",
-    "longDescription": "Developer tools for building, testing, and operating voice agents on Phonic. Use the connected Phonic MCP server to inspect projects and agents, discover voices, and manage conversation workflows. Bundled skills guide setup, prompt experiments, phone and browser integrations, tools, and post-call analysis. Operations use the connected account’s workspace permissions.",
+    "longDescription": "Create, test, and manage voice agents on Phonic. Use the connected Phonic MCP server to inspect projects and agents, discover voices, and manage conversation workflows. Bundled skills guide setup, prompt experiments, phone and browser integrations, tools, and post-call analysis. Operations use the connected account’s workspace permissions.",
     "defaultPrompt": [
       "Help me build my first Phonic voice agent.",
       "Find a voice for my agent and explain how to preview it.",
       "Help me test a prompt with a simulated conversation."
     ],
-    "category": "Developer Tools"
+    "category": "Productivity"
   },
   "extensions": {
     "com.openai": {
@@ -85,7 +85,7 @@
         }
       },
       "publication": {
-        "release_notes": "Initial 0.2.0 submission with nine Phonic skills and one OAuth-authenticated Phonic MCP connection. Corrects the subtitle length and Developer Tools category and supplies review scenarios."
+        "release_notes": "Initial 0.2.0 submission with nine Phonic skills and one OAuth-authenticated Phonic MCP connection. Includes review scenarios and a Productivity listing for creating, testing, and managing voice agents."
       }
     }
   }
