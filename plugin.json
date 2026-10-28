@@ -47,13 +47,13 @@
             },
             {
               "description": "Discover voices",
-              "prompt": "List available Phonic voices for the merritt model.",
+              "prompt": "List available Phonic voices.",
               "tools_triggered": "list_voices",
               "expected_behavior": "Call list_voices with model merritt and summarize available voices using the returned data."
             },
             {
               "description": "Inspect one available voice",
-              "prompt": "Pick a voice from the available merritt voices and show its details.",
+              "prompt": "Pick a voice from the available Phonic voices and show its details.",
               "tools_triggered": "list_voices, get_voice",
               "expected_behavior": "Use a returned voice ID to fetch details. Describe only attributes present in the response."
             },
