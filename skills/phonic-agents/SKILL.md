@@ -6,7 +6,11 @@ license: MIT
 
 # Configure Phonic agents and calls
 
-SDKs: `npm install phonic` / `pip install phonic`. Entry points: `new PhonicClient({ apiKey })` (Node), `Phonic(api_key=...)` / `AsyncPhonic(...)` (Python). REST base: `https://api.phonic.ai/v1` with `Authorization: Bearer $PHONIC_API_KEY`. Always use the `.ai` domain for API and docs URLs — `phonic.co` addresses still resolve for backward compatibility, but all new code should use `phonic.ai`.
+SDKs: `npm install phonic` / `pip install phonic`. REST base: `https://api.phonic.ai/v1`. Always use the `.ai` domain for new API and docs URLs.
+
+For operations through this plugin, use the connected Phonic MCP and its OAuth authorization. Do not search the user's local files or environment for credentials, or forward an application API key to the MCP connection.
+
+When implementing an application with the SDK or REST API, guide the user to configure their own Phonic API key in the application's server-side secret configuration. Do not ask them to paste it into chat. Application requests authenticate to Phonic's API using that explicitly configured key; keep it out of browser code, logs, and committed files. Read the current SDK authentication documentation when constructing the integration.
 
 Fetch live docs rather than from memory: use the index at [llms.txt](https://docs.phonic.ai/llms.txt). For the REST API, see [openapi.json](https://docs.phonic.ai/openapi.json). For the WebSocket protocol, see [asyncapi.json](https://docs.phonic.ai/asyncapi.json). If an endpoint does not appear in these docs, it doesn't exist, do not invent one.
 
