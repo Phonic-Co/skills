@@ -1,6 +1,6 @@
 ---
 name: phonic-voices
-description: Find, preview, and select Phonic voices for a language, accent, or speaking style. Use when a user wants to hear voice options configure a voice ID, or rotate/randomly allocate voices across conversations.
+description: Find, preview, and select Phonic voices for a language, accent, or speaking style. Use when a user wants to hear voice options, configure a voice ID, or randomly allocate voices across conversations.
 license: MIT
 ---
 
@@ -22,8 +22,8 @@ Set `voice_id` only within the requested agent/application change. Note that cho
 
 ## Allocate voices across conversations
 
-Offer a fixed voice, a random voice set, or ordered rotation according to the use case. Narrow the candidate set to voices suitable for the required languages and persona first.
+Offer a fixed voice or a random voice set according to the use case. Narrow the candidate set to voices suitable for the required languages and persona first.
 
 Phonic supports equal-probability random allocation: set `voice_id` and `additional_voice_ids` on the agent. Each conversation receives one voice from their combined set. The additional list must exclude `voice_id` and contain no duplicates. Verify the exposed schema against the [agent API](https://docs.phonic.ai/api-reference/agents/create.md) before applying it. For example, a set with `voice_id: "sabrina"` and `additional_voice_ids: ["sandeep"]` selects either voice with equal probability; it does not alternate predictably.
 
-For strict round-robin rotation, custom weights, or stable assignment by customer, select a voice in application code before starting the conversation and pass that single `voice_id` through the documented per-conversation configuration. Ensure inherited additional voices are cleared so random allocation cannot override the choice. Keep the selection stable for retries of the same conversation; use shared atomic state for round-robin allocation across concurrent workers. Avoid changing the shared agent for every call. Record the selected voice with experiment outcomes when comparing results, and do not claim small random samples are evenly balanced.
+When comparing voice performance, record the selected voice with experiment outcomes; small random samples may not be evenly balanced.
