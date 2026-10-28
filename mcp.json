@@ -4,10 +4,6 @@
     "phonic": {
       "type": "streamable-http",
       "url": "https://mcp.phonic.ai/mcp"
-    },
-    "phonic-docs": {
-      "type": "streamable-http",
-      "url": "https://docs.phonic.ai/_mcp/server"
     }
   }
 }
