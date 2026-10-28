@@ -9,5 +9,7 @@
   "homepage": "https://docs.phonic.ai",
   "repository": "https://github.com/Phonic-Co/skills",
   "license": "MIT",
-  "mcpServers": "./.mcp.json"
+  "mcpServers": "./.mcp.json",
+  "icon": "./.claude-plugin/icon.png",
+  "privacyPolicyUrl": "https://phonic.ai/legal/privacy-policy"
 }

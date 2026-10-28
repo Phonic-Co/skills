@@ -12,6 +12,7 @@ Or with Claude Code plugins:
 
 ```
 /plugin marketplace add Phonic-Co/skills
+/plugin install phonic@phonic-skills
 ```
 
 ## Skills
