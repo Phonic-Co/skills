@@ -11,5 +11,6 @@
   "license": "MIT",
   "mcpServers": "./.mcp.json",
   "icon": "./.claude-plugin/icon.png",
-  "privacyPolicyUrl": "https://phonic.ai/legal/privacy-policy"
+  "privacyPolicyUrl": "https://phonic.ai/legal/privacy-policy",
+  "termsOfServiceUrl": "https://phonic.ai/legal/terms-of-service"
 }
