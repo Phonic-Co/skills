@@ -9,6 +9,16 @@
   "homepage": "https://docs.phonic.ai",
   "repository": "https://github.com/Phonic-Co/skills",
   "license": "MIT",
+  "keywords": [
+    "phonic",
+    "voice-ai",
+    "voice-agents",
+    "conversational-ai",
+    "speech-to-speech",
+    "phone-calls",
+    "telephony",
+    "mcp"
+  ],
   "mcpServers": "./.mcp.json",
   "icon": "./.claude-plugin/icon.png",
   "privacyPolicyUrl": "https://phonic.ai/legal/privacy-policy",
