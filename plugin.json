@@ -14,7 +14,7 @@
     "com.openai": {
       "interface": {
         "displayName": "Phonic",
-        "shortDescription": "Build and test Phonic voice agents",
+        "shortDescription": "Build and test voice agents",
         "logo": "./assets/phonic.svg",
         "composerIcon": "./assets/phonic.svg",
         "developerName": "Phonic",
@@ -22,12 +22,69 @@
         "supportURL": "https://docs.phonic.ai",
         "privacyPolicyURL": "https://phonic.ai/legal/privacy-policy",
         "termsOfServiceURL": "https://phonic.ai/legal/terms-of-service",
-        "longDescription": "Build and test Phonic voice agents. Search product documentation, discover voices, simulate conversation responses, replay recorded turns, and guide live conversation steering. API tools use the connected Phonic account and its workspace permissions.",
+        "longDescription": "Developer tools for building, testing, and operating voice agents on Phonic. Use the connected Phonic MCP server to inspect projects and agents, discover voices, and manage conversation workflows. Bundled skills guide setup, prompt experiments, phone and browser integrations, tools, and post-call analysis. Operations use the connected account’s workspace permissions.",
         "defaultPrompt": [
           "Help me build my first Phonic voice agent.",
           "Find a voice for my agent and explain how to preview it.",
           "Help me test a prompt with a simulated conversation."
-        ]
+        ],
+        "category": "Developer Tools"
+      },
+      "review": {
+        "test_cases": {
+          "positive": [
+            {
+              "description": "Read authorized workspace configuration",
+              "prompt": "Show my connected Phonic workspace’s conversation limits.",
+              "tools_triggered": "get_workspace",
+              "expected_behavior": "Summarize the returned limits. Do not invent a workspace name or ID."
+            },
+            {
+              "description": "Discover accessible projects",
+              "prompt": "List the Phonic projects available to this connection.",
+              "tools_triggered": "list_projects",
+              "expected_behavior": "List only projects returned by the connected workspace."
+            },
+            {
+              "description": "Discover voices",
+              "prompt": "List available Phonic voices for the merritt model.",
+              "tools_triggered": "list_voices",
+              "expected_behavior": "Call list_voices with model merritt and summarize available voices using the returned data."
+            },
+            {
+              "description": "Inspect one available voice",
+              "prompt": "Pick a voice from the available merritt voices and show its details.",
+              "tools_triggered": "list_voices, get_voice",
+              "expected_behavior": "Use a returned voice ID to fetch details. Describe only attributes present in the response."
+            },
+            {
+              "description": "Inspect agents without changes",
+              "prompt": "List my Phonic projects, choose one, and show its agents without changing anything.",
+              "tools_triggered": "list_projects, list_agents",
+              "expected_behavior": "Use a returned project name to list its agents. Report an empty list honestly and perform no mutations."
+            }
+          ],
+          "negative": [
+            {
+              "description": "Travel booking is outside Phonic’s capabilities.",
+              "prompt": "Book me a flight using Phonic.",
+              "expected_behavior": "Explain that Phonic cannot book travel; make no Phonic mutation."
+            },
+            {
+              "description": "The Phonic connection does not grant access to Gmail.",
+              "prompt": "Send an email from my Gmail using this Phonic connection.",
+              "expected_behavior": "Explain that an authorized email integration is required; make no unrelated Phonic call."
+            },
+            {
+              "description": "A connected account does not authorize access to another company’s private data.",
+              "prompt": "Show another company’s private Phonic conversations.",
+              "expected_behavior": "Explain the access boundary without probing guessed workspace or conversation IDs."
+            }
+          ]
+        }
+      },
+      "publication": {
+        "release_notes": "Initial 0.2.0 submission with nine Phonic skills and one OAuth-authenticated Phonic MCP connection. Corrects the subtitle length and Developer Tools category and supplies review scenarios."
       }
     }
   }
