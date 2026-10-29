@@ -27,7 +27,14 @@
       "Find a voice for my agent and explain how to preview it.",
       "Help me test a prompt with a simulated conversation."
     ],
-    "category": "Productivity"
+    "category": "Productivity",
+    "capabilities": [
+      "Create and manage voice agents",
+      "Discover voices",
+      "Test conversation prompts",
+      "Review conversations",
+      "Extract conversation data"
+    ]
   },
   "extensions": {
     "com.openai": {
