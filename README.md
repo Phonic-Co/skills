@@ -48,6 +48,18 @@ Install the skills with the command above. Merge this entry into `.cursor/mcp.js
 
 Finish authentication from Cursor’s MCP settings; see [Cursor MCP setup](https://cursor.com/docs/mcp).
 
+### Devin
+
+In Devin Cloud, open **Customize → Plugins → Add plugin → From repository** and enter `Phonic-Co/skills`. The plugin includes the skills and Phonic MCP connection. Complete the OAuth prompt when Devin requests access to Phonic, then confirm the selected workspace before making changes.
+
+For a local checkout with the Devin CLI:
+
+```bash
+devin plugins install /absolute/path/to/skills
+```
+
+Start a new session and ask Devin to use `phonic-get-started`. See [Devin plugins](https://docs.devin.ai/product-guides/plugins) for installation and connection details.
+
 Avoid adding a second copy of an already connected server. Documentation search is provided through `search_docs` on the same Phonic connection.
 
 ## Get started

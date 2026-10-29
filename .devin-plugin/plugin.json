@@ -1,0 +1,23 @@
+{
+  "name": "phonic",
+  "displayName": "Phonic",
+  "description": "Build and test voice agents, discover voices, and review conversations with Phonic",
+  "shortDescription": "Voice agents",
+  "setup": {
+    "notice": "Each Phonic connection uses one workspace. Selecting a project does not switch workspaces."
+  },
+  "homepage": "https://phonic.ai",
+  "repository": "https://github.com/Phonic-Co/skills",
+  "logo": "assets/phonic.svg",
+  "keywords": [
+    "Productivity",
+    "Communication",
+    "voice",
+    "voice agents"
+  ],
+  "mcpServers": {
+    "phonic": {
+      "url": "https://mcp.phonic.ai/mcp"
+    }
+  }
+}
