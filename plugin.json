@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "phonic",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "description": "Build, test, and operate Phonic voice agents with product skills, API tools, and documentation search.",
   "author": {
     "name": "Phonic",
@@ -91,7 +91,7 @@
         }
       },
       "publication": {
-        "release_notes": "Initial 0.2.0 submission with nine Phonic skills and one OAuth-authenticated Phonic MCP connection. Includes review scenarios and a Productivity listing for creating, testing, and managing voice agents."
+        "release_notes": "1.0.0 release with nine Phonic skills and one OAuth-authenticated Phonic MCP connection. Includes review scenarios and a Productivity listing for creating, testing, and managing voice agents."
       }
     }
   }

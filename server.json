@@ -3,7 +3,7 @@
   "name": "io.github.Phonic-Co/phonic",
   "title": "Phonic",
   "description": "Create and manage voice agents, discover voices, review conversations, and search Phonic docs.",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "websiteUrl": "https://phonic.ai",
   "remotes": [
     {
