@@ -21,7 +21,7 @@
     "supportURL": "https://docs.phonic.ai",
     "privacyPolicyURL": "https://phonic.ai/legal/privacy-policy",
     "termsOfServiceURL": "https://phonic.ai/legal/terms-of-service",
-    "longDescription": "Create, test, and manage voice agents on Phonic. Use the connected Phonic MCP server to inspect projects and agents, discover voices, and manage conversation workflows. Bundled skills guide setup, prompt experiments, phone and browser integrations, tools, and post-call analysis. Operations use the connected account’s workspace permissions.",
+    "longDescription": "Create, test, and manage voice agents on Phonic. Update agents, discover voices, and manage conversation workflows. Bundled skills guide setup, prompt and tooling experiments, phone and browser integrations, tools, and post-call analysis.",
     "defaultPrompt": [
       "Help me build my first Phonic voice agent.",
       "Find a voice for my agent and explain how to preview it.",
