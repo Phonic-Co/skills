@@ -20,6 +20,10 @@ Tool types (webhook, websocket, context, built-in transfers, MCP), reserved para
 - Tools can be defined inline in the STS config (no pre-created tool): `tools: [{ "type": "custom_websocket", "execution_mode": "sync", "tool_schema": { "type": "function", "function": { ..., "strict": true } } }]` — the `strict: true` inside the function schema is required.
 - If you bridge audio server-side, never do blocking I/O in the audio send/receive loop — periodic multi-second stalls in agent audio are almost always blocking code in the bridge.
 
+## Authentication for configured tools
+
+Configure webhook and external MCP-server authentication on [Phonic](https://phonic.ai) in the intended workspace/project, then reference the saved tool or server from the agent configuration. Phonic's MCP cannot submit custom headers, including SIP transfer headers. Do not ask users to paste credentials into chat or use an SDK/REST/shell workaround to submit credentials excluded from MCP. For SDK application development, use existing environment variables or a secrets manager without displaying secret values.
+
 ## Transfers
 
 - Transfer to a human is a built-in tool (`built_in_transfer_to_phone_number`, target number in the tool config) attached to the agent — don't hand-roll Twilio call control.
