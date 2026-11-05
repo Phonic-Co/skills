@@ -15,6 +15,14 @@ Fetch live docs rather than from memory: use the index at [llms.txt](https://doc
 - Agents: `client.agents.create/get/list/update/upsert/delete`. `upsert` is create-or-update by name (idempotent). Agents are identified by name.
 - Outbound calls: `client.conversations.outboundCall(...)` — greeting goes in `config.welcome_message`.
 
+## MCP calls and saved configuration
+
+Regular outbound calls remain available through `create_outbound_call`. Direct SIP outbound calls and custom SIP phone-number registration are excluded from MCP while saved SIP connections are unsupported; do not invent a connection-ID tool or request SIP credentials in chat.
+
+For external storage, direct the user to [Phonic](https://phonic.ai), select the intended workspace/project, and create or rotate credentials in **Project settings → External storage policies**. Then list saved policies through MCP and reference the policy name or ID supported by the operation. Configure authenticated configuration endpoints on the website; MCP cannot submit their headers.
+
+Do not collect these credentials through chat or an SDK/REST/shell workaround for an excluded MCP operation. When implementing an SDK application, use existing environment variables or a secrets manager without displaying secret values.
+
 ## Prompting voice agents
 
 Voice prompts differ from chat prompts (speech formatting, silence handling, naturalness) — use [the prompting guide](https://docs.phonic.ai/docs/build/agents/prompting_guide.md).
