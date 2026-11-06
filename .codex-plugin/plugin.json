@@ -1,6 +1,6 @@
 {
   "name": "phonic",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Build, test, and operate Phonic voice agents with product skills, API tools, and documentation search.",
   "author": {
     "name": "Phonic",
@@ -39,6 +39,7 @@
   "extensions": {
     "com.openai": {
       "review": {
+        "demo_recording_url": "https://drive.google.com/file/d/1sCciWqBMJzl6KYwjLvdQhvr_9kX-AJ5J/view?usp=sharing",
         "test_cases": {
           "positive": [
             {
@@ -92,7 +93,7 @@
         }
       },
       "publication": {
-        "release_notes": "1.0.0 release with nine Phonic skills and one OAuth-authenticated Phonic MCP connection. Includes review scenarios and a Productivity listing for creating, testing, and managing voice agents."
+        "release_notes": "1.0.1 release with ten Phonic skills and one OAuth-authenticated Phonic MCP connection. Updated credential-setup guidance directs users to Phonic settings. Includes review scenarios for creating, testing, and managing voice agents."
       }
     }
   }
