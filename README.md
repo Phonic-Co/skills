@@ -86,5 +86,6 @@ A connected MCP does not automatically install skills. Conversely, installing sk
 | `phonic-websockets` | Build browser voice sessions and server audio bridges. |
 | `phonic-tools` | Connect tools and transfer callers. |
 | `phonic-post-call` | Process webhooks, extractions, and evaluations. |
+| `phonic-supervisor` | Add a supervisor that reviews risky agent actions during a call. |
 
 See [Phonic examples](https://github.com/Phonic-Co/phonic-examples) for runnable applications and [the docs](https://docs.phonic.ai/llms.txt) for current contracts.
