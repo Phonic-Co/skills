@@ -45,7 +45,7 @@
               "description": "Read authorized workspace configuration",
               "prompt": "Show my connected Phonic workspace’s conversation limits.",
               "tools_triggered": "get_workspace",
-              "expected_behavior": "Summarize the returned limits. Do not invent a workspace name or ID."
+              "expected_behavior": "Report active_conversations and max_active_conversations from get_workspace. This response does not provide a workspace name or ID; do not infer either."
             },
             {
               "description": "Discover accessible projects",
@@ -57,7 +57,7 @@
               "description": "Discover voices",
               "prompt": "List available Phonic voices.",
               "tools_triggered": "list_voices",
-              "expected_behavior": "Call list_voices with model merritt and summarize available voices using the returned data."
+              "expected_behavior": "Call list_voices without the deprecated model parameter and summarize available voices using the returned data."
             },
             {
               "description": "Inspect one available voice",
