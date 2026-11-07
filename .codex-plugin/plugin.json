@@ -27,7 +27,7 @@
       "Find a voice for my agent and explain how to preview it.",
       "Help me test a prompt with a simulated conversation."
     ],
-    "category": "Productivity",
+    "category": "Developer Tools",
     "capabilities": [
       "Create and manage voice agents",
       "Discover voices",
