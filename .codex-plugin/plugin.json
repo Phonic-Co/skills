@@ -58,7 +58,7 @@
               "description": "Discover voices",
               "prompt": "List available Phonic voices.",
               "tools_triggered": "list_voices",
-              "expected_behavior": "Call list_voices without the deprecated model parameter and summarize available voices using the returned data."
+              "expected_behavior": "Call list_voices and summarize available voices using the returned data."
             },
             {
               "description": "Inspect one available voice",
