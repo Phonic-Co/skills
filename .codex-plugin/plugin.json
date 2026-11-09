@@ -14,8 +14,8 @@
   "interface": {
     "displayName": "Phonic",
     "shortDescription": "Voice agents",
-    "logo": "./assets/phonic.svg",
-    "composerIcon": "./assets/phonic.svg",
+    "logo": "./assets/phonic.png",
+    "composerIcon": "./assets/phonic.png",
     "developerName": "Phonic",
     "websiteURL": "https://phonic.ai",
     "supportURL": "https://docs.phonic.ai",
