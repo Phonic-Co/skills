@@ -14,7 +14,7 @@ Inspect the client's available tools and MCP configuration before adding anythin
 
 Perform supported setup steps directly when the environment permits. If a login, client approval, or restart requires the user, give the exact next action and resume from that point when completed. Do not claim connection success until a Phonic tool responds. Installing a skill does not itself connect MCP, and connecting MCP does not install skills; automatic selection depends on the host loading this skill.
 
-Discover the tools actually exposed by the connection; prefixes differ between clients. Use `search_docs` on the same connection for product and API questions. If it is unavailable, use [the documentation index](https://docs.phonic.ai/llms.txt) and check connection status; do not require a separate docs server.
+Discover the tools actually exposed by the connection; prefixes differ between clients. For product and API questions, use `get_doc_page` on the same connection: call it without `page` for the docs index, then read the relevant pages. If it is unavailable, use [the documentation index](https://docs.phonic.ai/llms.txt) and check connection status; do not require a separate docs server.
 
 ## Set up the first agent
 

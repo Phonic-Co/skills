@@ -60,7 +60,7 @@ devin plugins install /absolute/path/to/skills
 
 Start a new session and ask Devin to use `phonic-get-started`. See [Devin plugins](https://docs.devin.ai/product-guides/plugins) for installation and connection details.
 
-Avoid adding a second copy of an already connected server. Documentation search is provided through `search_docs` on the same Phonic connection.
+Avoid adding a second copy of an already connected server. The documentation is available through `get_doc_page` on the same Phonic connection.
 
 ## Get started
 
