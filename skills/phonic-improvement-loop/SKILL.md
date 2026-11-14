@@ -25,11 +25,7 @@ Choose sample counts and a stopping condition from the user's objective, coverag
 
 ## Run and compare
 
-For a model comparison, omit `model` for the original-model baseline and supply `model` for the candidate, keeping the turn, prompt, and sample count fixed. Replay retains the conversation's saved intelligence level. Use only models available to the workspace under the same access rules as Responses; do not retry an eligibility rejection with a different alias.
-
-Check the discovered Replay tool schema before supplying `model`. If it does not expose the field yet, use the documented REST endpoint when available; never claim a model comparison ran when the request omitted the override. In the dashboard, **Original model** omits the override. Record the requested model with each result; new replay samples need not match the original output exactly.
-
-Ordinary tool outputs during replay are mocked, so later replies can depend on placeholder results. Use Responses with controlled tool outputs when those results matter to the comparison. Replay does not measure live voice behavior.
+If you want to compare models, you can run experiments to replay a turn with the same prompt on different models through the `model` parameter. Replay retains the conversation's saved intelligence level.
 
 Keep inputs, configuration, sample counts, and grading criteria consistent between baseline and candidate. Inspect generated text, proposed tool calls, and actions together; check tool names and arguments rather than judging plausible speech alone. A proposed tool call does not prove an external action executed. Text simulations do not measure voice quality, interruptions, or live latency.
 
