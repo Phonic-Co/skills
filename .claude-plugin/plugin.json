@@ -1,7 +1,7 @@
 {
   "name": "phonic",
-  "version": "1.0.1",
-  "description": "Build, test, and operate Phonic voice agents with product skills, API tools, and documentation search.",
+  "version": "1.0.2",
+  "description": "Build, test, and operate Phonic voice agents with product skills, API tools, and documentation lookup.",
   "author": {
     "name": "Phonic",
     "url": "https://phonic.ai"

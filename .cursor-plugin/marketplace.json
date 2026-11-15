@@ -7,7 +7,7 @@
     {
       "name": "phonic",
       "source": "./",
-      "description": "Build, test, and operate Phonic voice agents with product skills, API tools, and documentation search."
+      "description": "Build, test, and operate Phonic voice agents with product skills, API tools, and documentation lookup."
     }
   ]
 }
