@@ -2,7 +2,7 @@
   "mcpServers": {
     "phonic": {
       "type": "http",
-      "url": "https://mcp.phonic.ai/mcp"
+      "url": "https://mcp.phonic.ai/mcp?profile=review"
     }
   }
 }

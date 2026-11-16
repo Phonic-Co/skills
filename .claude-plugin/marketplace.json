@@ -8,8 +8,8 @@
     {
       "name": "phonic",
       "source": "./",
-      "description": "Build voice agents on Phonic: agents, phone calls, browser speech-to-speech, tools, webhooks, and conversation analysis."
+      "description": "Review existing Phonic conversations, transcripts, analysis, evaluations, and extractions."
     }
   ],
-  "description": "Official Phonic skills and MCP connection for building voice agents."
+  "description": "Phonic conversation review skills and MCP connection."
 }
