@@ -1,8 +1,8 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "phonic",
-  "version": "1.0.1",
-  "description": "Build, test, and operate Phonic voice agents with product skills, API tools, and documentation search.",
+  "version": "1.0.2",
+  "description": "Build, test, and operate Phonic voice agents with product skills, API tools, and documentation lookup.",
   "author": {
     "name": "Phonic",
     "url": "https://phonic.ai"
@@ -92,7 +92,7 @@
         }
       },
       "publication": {
-        "release_notes": "1.0.1 release with ten Phonic skills and one OAuth-authenticated Phonic MCP connection. Updated credential-setup guidance directs users to Phonic settings. Includes review scenarios for creating, testing, and managing voice agents."
+        "release_notes": "1.0.2 release: phonic-get-started skill now points at get_doc_page; search_docs was removed from the Phonic MCP server. Ten Phonic skills and one OAuth-authenticated Phonic MCP connection. Credential-setup guidance directs users to Phonic settings. Includes review scenarios for creating, testing, and managing voice agents."
       }
     }
   }
