@@ -25,6 +25,8 @@ Choose sample counts and a stopping condition from the user's objective, coverag
 
 ## Run and compare
 
+If you want to compare models, you can run experiments to replay a turn with the same prompt on different models through the `model` parameter. Replay retains the conversation's saved intelligence level.
+
 Keep inputs, configuration, sample counts, and grading criteria consistent between baseline and candidate. Inspect generated text, proposed tool calls, and actions together; check tool names and arguments rather than judging plausible speech alone. A proposed tool call does not prove an external action executed. Text simulations do not measure voice quality, interruptions, or live latency.
 
 For a local experiment, report what the related cases establish and their limits. For broader experiments, develop changes on train cases, select using validation, and assess the chosen prompt on untouched test cases. If test results guide a further edit, use a new test set before making a final generalization claim. If grading criteria change, regrade baseline and candidate consistently.
