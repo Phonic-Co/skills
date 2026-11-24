@@ -28,3 +28,16 @@ For example, after the conversation has been configured:
 Only follow that with `generate_reply` when the app should proactively speak. Keep trusted application instructions separate from untrusted user/document text. Do not place API keys or unnecessary personal data in the message.
 
 Verify the intended effect in the transcript and tool events, including what happens if the user is speaking when the update arrives. Keep the audio loop nonblocking. Report the distinction between a successfully sent message and observed agent behavior; sending a control message is not proof the agent followed it.
+
+## Prefer agent config over client-driven turns
+
+Use `say` and `generate_reply` for moments only your app knows about, such as a button that makes the agent speak or an event in your app. Don't use them to rebuild behavior the agent already has: a line your client scripts doesn't tell the agent why it was said, so later turns lose that context.
+
+| Instead of | Use |
+|---|---|
+| Opening the call with `say` | `welcome_message`, with `is_welcome_message_interruptible: false` if it must play in full |
+| Your own silence timer that sends `say` | `no_input_poke_sec`, plus `generate_no_input_poke_text: true` so the agent words the prompt from the conversation |
+| Your own hang-up tool followed by a scripted goodbye | `natural_conversation_ending`, which speaks before ending the call; handle `assistant_ended_conversation` |
+| A custom tool the agent should announce before it runs | `wait_for_speech_before_tool_call: true` on that tool |
+
+Whatever ends the call, close the connection only after `assistant_finished_speaking` for the last line, or its audio is cut off.
