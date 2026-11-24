@@ -6,7 +6,7 @@ license: MIT
 
 # Find a Phonic voice
 
-Point users to the [voice picker](https://phonic.ai/voices) to browse and listen. Use the [voices reference](https://docs.phonic.ai/docs/build/agents/voices) for voice IDs and descriptions. Use the connected `list_voices` tool (with its required model argument) or current SDK/API to verify availability, and `get_voice` for details when exposed. Tool prefixes and supported model values vary by client; inspect the schema rather than guessing them.
+Point users to the [voice picker](https://phonic.ai/voices) to browse and listen. Use the [voices reference](https://docs.phonic.ai/docs/build/agents/voices) for voice IDs and descriptions. Use the connected `list_voices` tool (it needs no arguments; omit `model`, which is deprecated and ignored) or current SDK/API to verify availability, and `get_voice` for details when exposed. Tool prefixes vary by client; inspect the schema rather than guessing them.
 
 Start with the use case and the person the voice should evoke. Ask only for missing details that change the recommendation:
 
