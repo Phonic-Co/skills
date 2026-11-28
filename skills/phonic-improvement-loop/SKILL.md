@@ -34,3 +34,5 @@ For a local experiment, report what the related cases establish and their limits
 Stop when the target is met, the agreed resource limit is reached, or further experiments are not justified by the evidence. Separate failed Replay or Responses API requests from poor generated replies and deliberately simulated tool errors. Report attempted, successful, and failed requests, sample sizes, representative failures, and total generations; do not silently drop missing samples. Fix access/eligibility errors before retrying, and bound transient retries within the experiment's resource limit.
 
 Return the proposed prompt diff and concise experiment results, including regressions and uncertainty. Raw outputs may contain conversation data and tool configuration; do not commit them by default. Updating a saved agent must be within the user's authorized task.
+
+When presenting conversations, follow [Sharing conversations](../phonic/SKILL.md#sharing-conversations): prefer viewer links over full payloads, include only relevant details, and clarify whether the user wants links, analysis, or raw data when uncertain.
