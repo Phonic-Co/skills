@@ -1,7 +1,7 @@
 {
   "name": "phonic",
-  "version": "1.0.1",
-  "description": "Build, test, and operate Phonic voice agents with product skills, API tools, and documentation search.",
+  "version": "1.0.2",
+  "description": "Review existing Phonic conversations, transcripts, analysis, evaluations, and extractions.",
   "author": {
     "name": "Phonic",
     "url": "https://phonic.ai"
@@ -13,13 +13,10 @@
   "license": "MIT",
   "keywords": [
     "phonic",
-    "voice",
-    "voice-ai",
-    "voice-agents",
-    "conversational-ai",
-    "speech-to-speech",
-    "phone-calls",
-    "telephony",
+    "conversations",
+    "transcripts",
+    "analysis",
+    "evaluations",
     "mcp"
   ],
   "mcpServers": "./.mcp.json",

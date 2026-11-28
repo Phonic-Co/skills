@@ -1,36 +1,25 @@
 ---
 name: phonic
-description: Choose a Phonic voice integration and find the relevant implementation skill. Use when starting a Phonic integration or deciding between phone calls, browser voice, and server audio.
-license: MIT
+description: Review existing Phonic conversation history, transcripts, analysis, evaluations, and extractions through the connected Phonic MCP server.
 ---
 
-# Build voice agents on Phonic
+# Review Phonic conversations
 
-SDKs: `npm install phonic` / `pip install phonic`. Entry points: `new PhonicClient({ apiKey })` (Node), `Phonic(api_key=...)` / `AsyncPhonic(...)` (Python). REST base: `https://api.phonic.ai/v1` with `Authorization: Bearer $PHONIC_API_KEY`. Always use the `.ai` domain for API and docs URLs — `phonic.co` addresses still resolve for backward compatibility, but all new code should use `phonic.ai`.
+Use the connected Phonic MCP server. Sign in through its OAuth browser flow if needed. Never request or read API keys, passwords, webhook signing secrets, or other credentials from chat, environment variables, or local files.
 
-Fetch live docs rather than from memory: use the index at [llms.txt](https://docs.phonic.ai/llms.txt). For the REST API, see [openapi.json](https://docs.phonic.ai/openapi.json). For the WebSocket protocol, see [asyncapi.json](https://docs.phonic.ai/asyncapi.json). If an endpoint does not appear in these docs, it doesn't exist, do not invent one.
+1. Use `list_projects` to identify an authorized project. Ask the user to choose when the intended project is unclear. `get_workspace` returns workspace settings and limits, not a workspace name or ID.
+2. Use `list_conversations` with the user's intended project and filters. Use `get_conversation` for the selected conversation and its transcript. Preserve full conversation IDs in references.
+3. Retrieve existing results with `get_conversation_analysis`, `list_conversation_evaluations`, and `list_conversation_extractions`. Inspect project evaluation prompts or extraction schemas when useful to explain the results. If no results exist, say so; this connector does not run evaluations or extractions.
+4. Ground conclusions in the returned transcripts and results. Distinguish observed facts from suggestions, and do not fabricate missing data.
 
-## Choosing a conversation surface
+Use `get_doc_page` for parameter and response documentation; omit `page` for the index. Documentation may describe the full Phonic product, but only use tools offered by this connection. Do not use direct HTTP, SDK, CLI, another endpoint, or another MCP profile as a fallback for unavailable operations.
 
-- **Outbound phone call**: `client.conversations.outboundCall({ to_phone_number, config })`
-- **Inbound phone number**: create/update the agent with `phone_number: "assign-automatically"`
-- **Voice in a browser or mobile app**: direct STS WebSocket `wss://api.phonic.ai/v1/sts/ws?session_token=...`
-- **Bridge your own telephony/audio server-side**: `client.conversations.connect()`
-- **Watch a live conversation (read-only)**: `wss://api.phonic.ai/v1/conversations/{id}/live/ws`
+This connection cannot create or modify agents, generate or preview speech, start phone/browser conversations, replay conversations, issue API keys or tokens, or retrieve webhook secrets. Explain this scope when asked for those actions. Suggestions about prompts are text recommendations only; do not apply them through another interface.
 
-Mistakes to avoid when picking:
+`submit_feedback` sends feedback to Phonic. Use it when the user requests a report about an integration problem; include only the details necessary to explain the issue, with no credentials.
 
-- Don't open the browser STS socket to place a phone call — phone calls are one API call (`outboundCall`); the STS socket streams a user's microphone.
-- Don't relay browser audio through your own server on the way to Phonic — it works, but adds a network hop of latency to every utterance; browsers connect directly using a session token. The session-token flow exists because an API key can't live in a browser; your own server holds the key, so server-side code uses `conversations.connect()` directly and never needs session tokens.
-- Don't confuse the two WebSockets: `sts/ws` is the live voice conversation; `conversations/{id}/live/ws` is a read-only monitoring feed (`conversation-updated` / `conversation-ended` events only) — it cannot send audio or speak.
+## Sharing conversations
 
-## Continue with the relevant skill
+When the user asks to find, list, show, or open conversations, return clickable conversation-viewer links with brief identifying details (such as date, agent, or duration), rather than dumping JSON, full transcripts, or tool-call payloads. If it is unclear whether they want viewer links, a summary/analysis, or raw data, ask a short clarifying question. Honor explicit requests for analysis, transcripts, or raw data, returning only the relevant details alongside the viewer link.
 
-Use the matching skill when installed. If it is unavailable, follow the live documentation links above.
-
-| Task | Skill |
-| --- | --- |
-| Agents, phone calls, prompts, and project operations | [phonic-agents](../phonic-agents/SKILL.md) |
-| Browser voice, STS configuration, audio, and reconnects | [phonic-websockets](../phonic-websockets/SKILL.md) |
-| Agent tools and human transfers | [phonic-tools](../phonic-tools/SKILL.md) |
-| Webhooks, extractions, and conversation evaluations | [phonic-post-call](../phonic-post-call/SKILL.md) |
+Build viewer links as `https://phonic.ai/conversations/{workspace}/{project}/{conversationId}` using the returned conversation's `workspace`, `project.name`, and full `id`; URL-encode each path segment. Do not use `project.id`, an admin-only URL, or the temporary `audio_url`. If the required fields are missing or ambiguous, look them up through the available conversation tools or ask the user; never guess a workspace/project or fabricate a link. These links use the viewer's existing Phonic access and do not make the conversation public.
