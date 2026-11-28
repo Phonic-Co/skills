@@ -17,3 +17,9 @@ Use `get_doc_page` for parameter and response documentation; omit `page` for the
 This connection cannot create or modify agents, generate or preview speech, start phone/browser conversations, replay conversations, issue API keys or tokens, or retrieve webhook secrets. Explain this scope when asked for those actions. Suggestions about prompts are text recommendations only; do not apply them through another interface.
 
 `submit_feedback` sends feedback to Phonic. Use it when the user requests a report about an integration problem; include only the details necessary to explain the issue, with no credentials.
+
+## Sharing conversations
+
+When the user asks to find, list, show, or open conversations, return clickable conversation-viewer links with brief identifying details (such as date, agent, or duration), rather than dumping JSON, full transcripts, or tool-call payloads. If it is unclear whether they want viewer links, a summary/analysis, or raw data, ask a short clarifying question. Honor explicit requests for analysis, transcripts, or raw data, returning only the relevant details alongside the viewer link.
+
+Build viewer links as `https://phonic.ai/conversations/{workspace}/{project}/{conversationId}` using the returned conversation's `workspace`, `project.name`, and full `id`; URL-encode each path segment. Do not use `project.id`, an admin-only URL, or the temporary `audio_url`. If the required fields are missing or ambiguous, look them up through the available conversation tools or ask the user; never guess a workspace/project or fabricate a link. These links use the viewer's existing Phonic access and do not make the conversation public.
