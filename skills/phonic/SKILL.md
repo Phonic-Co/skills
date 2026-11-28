@@ -1,6 +1,6 @@
 ---
 name: phonic
-description: Choose a Phonic voice integration and find the relevant implementation skill. Use when starting a Phonic integration or deciding between phone calls, browser voice, and server audio.
+description: Choose a Phonic voice integration and find the relevant implementation skill. Use when finding or viewing Phonic conversations, starting a Phonic integration, or deciding between phone calls, browser voice, and server audio.
 license: MIT
 ---
 
@@ -9,6 +9,13 @@ license: MIT
 SDKs: `npm install phonic` / `pip install phonic`. Entry points: `new PhonicClient({ apiKey })` (Node), `Phonic(api_key=...)` / `AsyncPhonic(...)` (Python). REST base: `https://api.phonic.ai/v1` with `Authorization: Bearer $PHONIC_API_KEY`. Always use the `.ai` domain for API and docs URLs — `phonic.co` addresses still resolve for backward compatibility, but all new code should use `phonic.ai`.
 
 Fetch live docs rather than from memory: use the index at [llms.txt](https://docs.phonic.ai/llms.txt). For the REST API, see [openapi.json](https://docs.phonic.ai/openapi.json). For the WebSocket protocol, see [asyncapi.json](https://docs.phonic.ai/asyncapi.json). If an endpoint does not appear in these docs, it doesn't exist, do not invent one.
+
+## Sharing conversations
+
+When the user asks to find, list, show, or open conversations, return clickable conversation-viewer links with brief identifying details (such as date, agent, or duration), rather than dumping JSON, full transcripts, or tool-call payloads. If it is unclear whether they want viewer links, a summary/analysis, or raw data, ask a short clarifying question. Honor explicit requests for analysis, transcripts, or raw data, returning only the relevant details alongside the viewer link.
+
+Build viewer links as `https://phonic.ai/conversations/{workspace}/{project}/{conversationId}` using the returned conversation's `workspace`, `project.name`, and full `id`; URL-encode each path segment. Do not use `project.id`, an admin-only URL, or the temporary `audio_url`. If the required fields are missing or ambiguous, look them up through the available conversation tools or ask the user; never guess a workspace/project or fabricate a link. These links use the viewer's existing Phonic access and do not make the conversation public.
+
 
 ## Choosing a conversation surface
 

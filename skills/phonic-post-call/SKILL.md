@@ -26,3 +26,5 @@ Webhooks can indicate conversation progress: `conversation.ended`, `conversation
   2. Durably enqueue the event before returning 2xx; process slow work with a retryable worker.
   3. Store each event id durably (DB unique constraint, not process memory) and skip events you've already processed.
   4. For external side effects, use a stable idempotency key supported by the destination and persist the result. A crash after a side effect but before marking it complete can otherwise duplicate it on retry. A local started/done marker alone does not guarantee exactly-once execution; reconcile ambiguous outcomes before retrying non-idempotent operations.
+
+When presenting conversations, follow [Sharing conversations](../phonic/SKILL.md#sharing-conversations): prefer viewer links over full payloads, include only relevant details, and clarify whether the user wants links, analysis, or raw data when uncertain.
